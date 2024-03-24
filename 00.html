@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Adventure</title>
+    <style>
+        /* CSS 样式可以在这里添加 */
+        /* 這裡提供一個簡單的例子 */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #maze {
+            display: inline-block;
+            position: relative;
+            border: 2px solid black;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+        #player {
+            width: 30px;
+            height: 30px;
+            background-color: blue;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <h1>Maze Adventure</h1>
+    <div id="maze">
+        <!-- 迷宮格子可以使用JavaScript動態生成 -->
+    </div>
+    <p>Use arrow keys to move</p>
+
+    <script>
+        // JavaScript 代碼可以在這裡添加
+        document.addEventListener('DOMContentLoaded', () => {
+            const maze = document.getElementById('maze');
+            const player = document.createElement('div');
+            player.id = 'player';
+            maze.appendChild(player);
+
+            const mazeWidth = 10; // 迷宮寬度
+            const mazeHeight = 10; // 迷宮高度
+            const cellSize = 30; // 每個格子的大小
+
+            let playerPosition = { x: 0, y: 0 };
+
+            function drawMaze() {
+                for (let y = 0; y < mazeHeight; y++) {
+                    for (let x = 0; x < mazeWidth; x++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        maze.appendChild(cell);
+                    }
+                    maze.appendChild(document.createElement('br'));
+                }
+            }
+
+            function movePlayer(direction) {
+                switch (direction) {
+                    case 'ArrowUp':
+                        if (playerPosition.y > 0) playerPosition.y--;
+                        break;
+                    case 'ArrowDown':
+                        if (playerPosition.y < mazeHeight - 1) playerPosition.y++;
+                        break;
+                    case 'ArrowLeft':
+                        if (playerPosition.x > 0) playerPosition.x--;
+                        break;
+                    case 'ArrowRight':
+                        if (playerPosition.x < mazeWidth - 1) playerPosition.x++;
+                        break;
+                }
+                renderPlayer();
+            }
+
+            function renderPlayer() {
+                player.style.left = playerPosition.x * cellSize + 'px';
+                player.style.top = playerPosition.y * cellSize + 'px';
+            }
+
+            function checkWin() {
+                if (playerPosition.x === mazeWidth - 1 && playerPosition.y === mazeHeight - 1) {
+                    alert('Congratulations! You have reached the exit.');
+                    resetGame();
+                }
+            }
+
+            function resetGame() {
+                playerPosition = { x: 0, y: 0 };
+                renderPlayer();
+            }
+
+            drawMaze();
+            renderPlayer();
+
+            document.addEventListener('keydown', (event) => {
+                movePlayer(event.key);
+                checkWin();
+            });
+        });
+    </script>
+</body>
+</html>
