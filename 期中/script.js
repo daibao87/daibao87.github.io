@@ -30,8 +30,6 @@ function generateFoodPosition() {
         y: Math.floor(Math.random() * (canvasSize / cellSize)) * cellSize
     };
 }
-
-// 移動貪食蛇
 function moveSnake() {
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
     snake.unshift(head); 
