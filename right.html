@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Button Manipulation</title>
+<style>
+    button {
+        width: 100px;
+        height: 50px;
+        font-size: 16px;
+        position: relative; 
+    }
+</style>
+</head>
+<body>
+<button id="moveButton">哭哭</button>
+<script>
+    const moveButton = document.getElementById('moveButton');
+    moveButton.addEventListener('click', function() {
+        let currentLeft = parseInt(window.getComputedStyle(moveButton).left || 0);
+        moveButton.style.left = (currentLeft + 10) + 'px';
+    });
+</script>
+</body>
+</html>
