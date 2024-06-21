@@ -73,7 +73,7 @@ function isSnakeCollision() {
     return false;
 }
 function gameOver() {
-    alert(`你死了! 你得到了 ${score}分`);
+    alert(`你死了! 你得到了${score}分`);
     resetGame();
 }
 function resetGame() {
