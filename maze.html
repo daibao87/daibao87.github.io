@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maze Game</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+    #maze {
+        display: flex;
+        flex-wrap: wrap;
+        width: 400px; /* 迷宮容器寬度 */
+        height: 400px; /* 迷宮容器高度 */
+        border: 2px solid #333;
+        background-color: #fff;
+    }
+    .cell {
+        width: 20px; /* 每個格子的寬度 */
+        height: 20px; /* 每個格子的高度 */
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+    }
+    .player {
+        width: 20px;
+        height: 20px;
+        background-color: green;
+        position: absolute;
+        transition: left 0.2s ease, top 0.2s ease;
+    }
+    .goal {
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        position: absolute;
+    }
+</style>
+</head>
+<body>
+<div id="maze"></div>
+
+<script>
+    const mazeWidth = 20; // 迷宮的寬度（格子數）
+    const mazeHeight = 20; // 迷宮的高度（格子數）
+    const maze = document.getElementById('maze');
+    const player = document.createElement('div');
+    const goal = document.createElement('div');
+    let playerPosition = { x: 0, y: 0 }; // 玩家初始位置
+
+    // 生成迷宮的函數
+    function generateMaze() {
+        maze.innerHTML = ''; // 清空迷宮
+        for (let row = 0; row < mazeHeight; row++) {
+            for (let col = 0; col < mazeWidth; col++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                maze.appendChild(cell);
+            }
+        }
+    }
+
+    // 初始化玩家和目标位置
+    function initGame() {
+        player.classList.add('player');
+        maze.appendChild(player);
+        goal.classList.add('goal');
+        goal.style.left = `${mazeWidth * 20 - 20}px`; // 目標在迷宮右下角
+        goal.style.top = `${mazeHeight * 20 - 20}px`;
+        maze.appendChild(goal);
+    }
+
+    // 確認移動是否有效
+    function canMoveTo(x, y) {
+        if (x < 0 || x >= mazeWidth || y < 0 || y >= mazeHeight) {
+            return false; // 超出邊界
+        }
+        const targetCell = document.querySelector(`.cell:nth-child(${y * mazeWidth + x + 1})`);
+        if (!targetCell || targetCell.style.backgroundColor !== 'white') {
+            return false; // 目標不是白色
+        }
+        return true;
+    }
+
+    // 移動玩家
+    function movePlayer(direction) {
+        let newX = playerPosition.x;
+        let newY = playerPosition.y;
+        switch (direction) {
+            case 'up':
+                newY--;
+                break;
+            case 'down':
+                newY++;
+                break;
+            case 'left':
+                newX--;
+                break;
+            case 'right':
+                newX++;
+                break;
+            default:
+                return;
+        }
+        if (canMoveTo(newX, newY)) {
+            player.style.left = `${newX * 20}px`;
+            player.style.top = `${newY * 20}px`;
+            playerPosition.x = newX;
+            playerPosition.y = newY;
+            checkWinCondition();
+        }
+    }
+
+    // 檢查是否贏得遊戲
+    function checkWinCondition() {
+        if (playerPosition.x === mazeWidth - 1 && playerPosition.y === mazeHeight - 1) {
+            alert('恭喜！你贏得了遊戲！');
+        }
+    }
+
+    // 初始化迷宮遊戲
+    generateMaze();
+    initGame();
+
+    // 監聽鍵盤事件
+    document.addEventListener('keydown', function(event) {
+        switch (event.key) {
+            case 'ArrowUp':
+                movePlayer('up');
+                break;
+            case 'ArrowDown':
+                movePlayer('down');
+                break;
+            case 'ArrowLeft':
+                movePlayer('left');
+                break;
+            case 'ArrowRight':
+                movePlayer('right');
+                break;
+            default:
+                return;
+        }
+    });
+</script>
+
+</body>
+</html>
