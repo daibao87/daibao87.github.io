@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可展開縮放的側欄 - JavaScript</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        .sidebar {
+            width: 60px;
+            height: 100vh;
+            background-color: #333;
+            overflow-x: hidden;
+            transition: width 0.5s;
+        }
+        .sidebar.expanded {
+            width: 250px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .toggle-btn {
+            position: absolute;
+            top: 20px;
+            left: 65px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <a href="#" onclick="showContent('about')">自我介紹</a>
+        <a href="#" onclick="showContent('projects')">作品</a>
+        <a href="#" onclick="showContent('contact')">聯絡方式</a>
+        <a href="#" onclick="showContent('more')">更多...</a>
+    </div>
+    <button class="toggle-btn" id="toggleBtn">☰</button>
+    <div class="content" id="content">
+        <h1>歡迎來到我的網站</h1>
+        <p>這是一個使用 JavaScript 實現的可展開縮放的側欄。</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
