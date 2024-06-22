@@ -1,4 +1,4 @@
-document.getElementById('translateButton').addEventListener('click', () => {
+document.getElementById('translateButton').addEventListener('click', async () => {
     const inputText = document.getElementById('inputText').value;
     const languageSelect = document.getElementById('languageSelect').value;
 
@@ -7,29 +7,26 @@ document.getElementById('translateButton').addEventListener('click', () => {
         return;
     }
 
-    const translations = {
-        'zh-en': {
-            '你好': 'Hello',
-            '世界': 'World'
-        },
-        'zh-ja': {
-            '你好': 'こんにちは',
-            '世界': '世界'
-        },
-        'en-zh': {
-            'Hello': '你好',
-            'World': '世界'
-        },
-        'ja-zh': {
-            'こんにちは': '你好',
-            '世界': '世界'
+    try {
+        const response = await fetch('https://api.groq.com/translate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                text: inputText,
+                language: languageSelect
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('翻譯請求失敗');
         }
-    };
 
-    const translationMap = translations[languageSelect];
-    const words = inputText.split(' ');
-    const translatedWords = words.map(word => translationMap[word] || word);
-    const translatedText = translatedWords.join(' ');
-
-    document.getElementById('translationOutput').textContent = translatedText;
+        const data = await response.json();
+        document.getElementById('translationOutput').textContent = data.translation;
+    } catch (error) {
+        console.error('錯誤:', error);
+        alert('翻譯時發生錯誤，請重試。');
+    }
 });
